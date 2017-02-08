@@ -1,5 +1,4 @@
 import sys
-from os import fork
 
 import time
 from PyQt5 import QtWidgets
@@ -16,8 +15,9 @@ from util import MyYaml
 
 if __name__ == '__main__':
 
-    Communication.send2()
-    pid = fork()
+    # Communication.send2()
+    #pid = fork()
+    pid = 1
     if pid is 0:
         while True:
             Communication.send2()

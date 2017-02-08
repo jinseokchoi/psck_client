@@ -6,3 +6,4 @@ __pycache__/main.cpython-35.pyc
 ui/form.ui.autosave
 ui/test.py
 setting.yaml
+*.pyc
