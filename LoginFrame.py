@@ -12,6 +12,7 @@ from MongoDao import LoginDao
 from Myhttp import Communication
 import webbrowser
 from Util import MyYaml
+import hashlib
 
 
 class LoginFrame(object):
@@ -52,6 +53,7 @@ class LoginFrame(object):
         LoginFrame.lineEdit.setObjectName("lineEdit")
         LoginFrame.verticalLayout_5.addWidget(LoginFrame.lineEdit)
         LoginFrame.lineEdit_2 = QtWidgets.QLineEdit(LoginFrame.verticalLayoutWidget)
+        LoginFrame.lineEdit_2.setEchoMode(QtWidgets.QLineEdit.Password)
         LoginFrame.lineEdit_2.setObjectName("lineEdit_2")
         LoginFrame.verticalLayout_5.addWidget(LoginFrame.lineEdit_2)
         LoginFrame.horizontalLayout_3.addLayout(LoginFrame.verticalLayout_5)
@@ -105,7 +107,9 @@ class LoginFrame(object):
 
         my_id = LoginFrame.lineEdit.text()
         my_pw = LoginFrame.lineEdit_2.text()
-        if LoginDao.login(my_id, my_pw):
+        my_pw_enc = hashlib.sha1(my_pw.encode('utf-8')).hexdigest()
+
+        if LoginDao.login(my_id, my_pw_enc):
             LoginFrame.qwidget.hide()
             Communication.login(my_id)
             User.u_id = my_id

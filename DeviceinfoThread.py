@@ -45,25 +45,29 @@ class DeviceInfoThread(QThread):
             # mac_num = hex(uuid.getnode()).replace('0x', '').upper()
             # mac = '-'.join(mac_num[i: i + 2] for i in range(0, 11, 2))
             # return mac
-            addrs = psutil.net_if_addrs().get('Wi-Fi')
+            addrs = psutil.net_if_addrs().get('무선 네트워크 연결')
             for i in addrs:
                 if i.family == -1:
                     return i.address
 
     @staticmethod
     def get_my_ip_address():  # IP Address function
-        if platform.system() == "Darwin":
-            addrs = psutil.net_if_addrs().get('en0')
-            for i in addrs:
-                if i.family == 2:  # IP 주소
-                    return i.address
-        elif platform.system() == "Windows":
-            # hostname = socket.gethostname()
-            # return socket.gethostbyname(hostname)
-            addrs = psutil.net_if_addrs().get('Wi-Fi')
-            for i in addrs:
-                if i.family == 2:
-                    return i.address
+        try:
+            if platform.system() == "Darwin":
+                addrs = psutil.net_if_addrs().get('en0')
+                for i in addrs:
+                    if i.family == 2:  # IP 주소
+                        return i.address
+            elif platform.system() == "Windows":
+                # hostname = socket.gethostname()
+                # return socket.gethostbyname(hostname)
+                addrs = psutil.net_if_addrs().get('무선 네트워크 연결')
+                for i in addrs:
+                    if i.family == 2:
+                        return i.address
+
+        except Exception as e:
+            print(e)
 
     @staticmethod
     def get_my_booting_time():

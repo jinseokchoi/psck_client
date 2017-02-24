@@ -8,6 +8,8 @@
 import sys
 
 import pymongo
+import hashlib
+from hashlib import sha1
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication
 
@@ -66,6 +68,7 @@ class JoinFrame(object):
         JoinFrame.verticalLayout_5.setObjectName("verticalLayout_5")
         JoinFrame.lineEdit.setObjectName("lineEdit")
         JoinFrame.verticalLayout_5.addWidget(JoinFrame.lineEdit)
+        JoinFrame.lineEdit_2.setEchoMode(QtWidgets.QLineEdit.Password)
         JoinFrame.lineEdit_2.setObjectName("lineEdit_2")
         JoinFrame.verticalLayout_5.addWidget(JoinFrame.lineEdit_2)
         JoinFrame.horizontalLayout_3.addLayout(JoinFrame.verticalLayout_5)
@@ -103,9 +106,18 @@ class JoinFrame(object):
         JoinFrame.qwidget.hide()
 
     @staticmethod
+    # def ok_btn_click():
+    #     if JoinDao.join(JoinFrame.lineEdit.text(), JoinFrame.lineEdit_2.text()):
+    #         JoinFrame.widget_hide()
+
     def ok_btn_click():
-        if JoinDao.join(JoinFrame.lineEdit.text(), JoinFrame.lineEdit_2.text()):
+        signup_id = JoinFrame.lineEdit.text()
+        signup_pw = JoinFrame.lineEdit_2.text()
+        signup_pw_enc = hashlib.sha1(signup_pw.encode('utf-8')).hexdigest()
+
+        if JoinDao.join(signup_id, signup_pw_enc):
             JoinFrame.widget_hide()
+
 
     @staticmethod
     def cancel_btn_click():
