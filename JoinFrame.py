@@ -13,7 +13,10 @@ from hashlib import sha1
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication
 
+from FailDialog import FailDialog
 from MongoDao import JoinDao
+from Myhttp import Communication
+from model.Account import Account
 
 
 class JoinFrame(object):
@@ -116,7 +119,14 @@ class JoinFrame(object):
         signup_pw_enc = hashlib.sha1(signup_pw.encode('utf-8')).hexdigest()
 
         if JoinDao.join(signup_id, signup_pw_enc):
+            account = Account(JoinFrame.lineEdit.text(),JoinFrame.lineEdit_2.text())
+
+        result = Communication.join(account)
+        if result['success']:
             JoinFrame.widget_hide()
+        else:
+            FailDialog.retranslateUi('Fail', result['message'])
+            FailDialog.widget_show()
 
 
     @staticmethod
